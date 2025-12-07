@@ -107,17 +107,25 @@ function placeOrder() {
     return;
   }
 
-  var msg = "Table: " + tableNo + "\n\n";
+  var msg = "New order from Table: " + tableNo + "\n\n";
   var total = 0;
 
   for (var i = 0; i < cart.length; i++) {
     var c = cart[i];
-    msg += c.name + " - ₹" + c.price + "\n";
-    total += c.price;
+    var lineTotal = c.price; // har item ek baar add ho raha hai
+    msg += c.name + " - ₹" + lineTotal + "\n";
+    total += lineTotal;
   }
+
   msg += "\nTotal: ₹" + total;
 
-  alert("ORDER SUMMARY:\n\n" + msg);
+  // 👇 yaha chacha ka WhatsApp number daalo
+  // format: 91 + 10 digit number (without + sign)
+  var phone = "91XXXXXXXXXX";
+
+  var url = "https://wa.me/" + phone + "?text=" + encodeURIComponent(msg);
+
+  window.location.href = url;
 }
 
 // button listener
@@ -129,3 +137,4 @@ if (btn) {
 // start
 renderMenu();
 renderCart();
+
