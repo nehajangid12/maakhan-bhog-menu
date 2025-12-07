@@ -15,27 +15,19 @@
       padding: 0;
     }
 
-  body {
+body {
   margin: 0;
-  font-family: Arial, sans-serif;
-
-  /* 🔥 Background image + halki dark layer */
-  background:
-    linear-gradient(rgba(0,0,0,0.35), rgba(0,0,0,0.65)),
-    url("maakhan-bhog.jpg");
-
-  /* yahan change kiya hai 👇 */
-  background-size: contain;      /* poori image dikhane ke liye */
-  background-position: top center;
-  background-repeat: no-repeat;
-  background-color: #000;        /* niche ka area black rahega */
-
+  padding: 0;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   min-height: 100vh;
-  color: white;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
+
+  /* YAHAN SE BACKGROUND IMAGE */
+  background:
+    linear-gradient(180deg, rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.85)),
+    url('maakhan-bhog-front.jpg') center center / cover no-repeat;
+  /* YAHAN TAK */
+
+  color: #fff;
 }
 
 .hero {
@@ -158,6 +150,7 @@
 </body>
 
 </html>
+
 
 
 
