@@ -1,10 +1,31 @@
-// ----- GET TABLE NUMBER -----
-const params = new URLSearchParams(window.location.search);
-const tableNo = params.get("table") || "Not Provided";
-document.getElementById("table").innerText = "Table No: " + tableNo;
+// ------------- TABLE NUMBER -------------
 
-// ----- MENU DATA -----
-const menu = [
+function getTableNumber() {
+  var query = window.location.search; // ?table=1
+  var table = "Not Provided";
+
+  if (query.indexOf("table=") !== -1) {
+    var parts = query.split("table=");
+    if (parts.length > 1) {
+      var numPart = parts[1].split("&")[0];
+      if (numPart) {
+        table = numPart;
+      }
+    }
+  }
+
+  var t = document.getElementById("table-text");
+  if (t) {
+    t.innerHTML = "Table No: " + table;
+  }
+  return table;
+}
+
+var tableNo = getTableNumber();
+
+// ------------- MENU DATA -------------
+
+var menu = [
   { id: 1, name: "Paneer Butter Masala", price: 220 },
   { id: 2, name: "Shahi Paneer", price: 240 },
   { id: 3, name: "Dal Makhani", price: 190 },
@@ -15,76 +36,96 @@ const menu = [
   { id: 8, name: "Mineral Water", price: 20 }
 ];
 
-// ----- CART -----
-let cart = [];
+// ------------- CART -------------
 
-// ----- SHOW MENU -----
-function renderMenu() {
-  const menuDiv = document.getElementById("menu");
-  menuDiv.innerHTML = "";
+var cart = [];
 
-  menu.forEach(item => {
-    const div = document.createElement("div");
-    div.className = "item";
-
-    const info = document.createElement("span");
-    info.innerText = ${item.name} - ₹${item.price};
-
-    const btn = document.createElement("button");
-    btn.innerText = "Add";
-    btn.onclick = () => addToCart(item.id);
-
-    div.appendChild(info);
-    div.appendChild(btn);
-    menuDiv.appendChild(div);
-  });
-}
-
-// ----- ADD TO CART -----
 function addToCart(id) {
-  const item = menu.find(i => i.id === id);
+  var item = null;
+  for (var i = 0; i < menu.length; i++) {
+    if (menu[i].id === id) {
+      item = menu[i];
+      break;
+    }
+  }
+  if (!item) return;
+
   cart.push(item);
-  showCart();
+  renderCart();
 }
 
-// ----- SHOW CART -----
-function showCart() {
-  const orderDiv = document.getElementById("order");
-  const totalDiv = document.getElementById("total");
+function renderCart() {
+  var cartDiv = document.getElementById("cart");
+  var totalP = document.getElementById("total");
+  if (!cartDiv || !totalP) return;
 
-  orderDiv.innerHTML = "";
-  let total = 0;
-
-  cart.forEach(item => {
-    const p = document.createElement("p");
-    p.innerText = ${item.name} - ₹${item.price};
-    orderDiv.appendChild(p);
-    total += item.price;
-  });
-
-  totalDiv.innerText = "Total: ₹" + total;
-}
-
-// ----- SEND TO WHATSAPP -----
-function placeOrder() {
   if (cart.length === 0) {
-    alert("Please select items first");
+    cartDiv.innerHTML = "<p>No items added yet.</p>";
+    totalP.innerHTML = "Total: ₹0";
     return;
   }
 
-  let text = Order from Table ${tableNo}%0A%0A;
-  let total = 0;
+  var html = "";
+  var total = 0;
 
-  cart.forEach(i => {
-    text += ${i.name} - ₹${i.price}%0A;
-    total += i.price;
-  });
+  for (var i = 0; i < cart.length; i++) {
+    var c = cart[i];
+    html +=
+      "<p>" + c.name + " - ₹" + c.price + "</p>";
+    total += c.price;
+  }
 
-  text += %0ATotal: ₹${total};
-
-  const phone = "91XXXXXXXXXX"; // 👈 apna number daalo
-  window.open(https://wa.me/${phone}?text=${text}, "_blank");
+  cartDiv.innerHTML = html;
+  totalP.innerHTML = "Total: ₹" + total;
 }
 
-// RUN MENU
+// ------------- MENU RENDER -------------
+
+function renderMenu() {
+  var menuDiv = document.getElementById("menu");
+  if (!menuDiv) return;
+
+  var html = "";
+
+  for (var i = 0; i < menu.length; i++) {
+    var m = menu[i];
+    html +=
+      "<div class='menu-item'>" +
+      "<span>" + m.name + " - ₹" + m.price + "</span>" +
+      " <button onclick='addToCart(" + m.id + ")'>Add</button>" +
+      "</div>";
+  }
+
+  menuDiv.innerHTML = html;
+}
+
+// ------------- PLACE ORDER (abhi sirf alert) -------------
+
+function placeOrder() {
+  if (cart.length === 0) {
+    alert("Please add at least one item.");
+    return;
+  }
+
+  var msg = "Table: " + tableNo + "\n\n";
+  var total = 0;
+
+  for (var i = 0; i < cart.length; i++) {
+    var c = cart[i];
+    msg += c.name + " - ₹" + c.price + "\n";
+    total += c.price;
+  }
+  msg += "\nTotal: ₹" + total;
+
+  alert("ORDER SUMMARY:\n\n" + msg);
+}
+
+// button listener
+var btn = document.getElementById("placeOrder");
+if (btn) {
+  btn.onclick = placeOrder;
+}
+
+// start
 renderMenu();
+renderCart();
