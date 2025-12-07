@@ -112,19 +112,22 @@ function placeOrder() {
 
   for (var i = 0; i < cart.length; i++) {
     var c = cart[i];
-    var lineTotal = c.price; // har item ek baar add ho raha hai
-    msg += c.name + " - ₹" + lineTotal + "\n";
-    total += lineTotal;
+    msg += c.name + " - ₹" + c.price + "\n";
+    total += c.price;
   }
 
   msg += "\nTotal: ₹" + total;
 
-  // 👇 yaha chacha ka WhatsApp number daalo
-  // format: 91 + 10 digit number (without + sign)
-  var phone = "91 9783746912";
+  // 👉 yaha chacha ka WhatsApp number daalo (91 + 10 digit, '+' mat lagana)
+  var phone = "919783746912";
 
-  var url = "https://wa.me/" + phone + "?text=" + encodeURIComponent(msg);
+  // api.whatsapp.com wala URL mobile par jyada reliable hota hai
+  var url = "https://api.whatsapp.com/send?phone=" + phone + "&text=" + encodeURIComponent(msg);
 
+  // pehle alert dikha do (user ko confirm bhi dikh jayega)
+  alert("Redirecting to WhatsApp with this order:\n\n" + msg);
+
+  // phir WhatsApp kholne ki try
   window.location.href = url;
 }
 
@@ -137,5 +140,6 @@ if (btn) {
 // start
 renderMenu();
 renderCart();
+
 
 
