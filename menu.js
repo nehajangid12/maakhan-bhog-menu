@@ -121,7 +121,7 @@ function placeOrder() {
 
   // 👇 yaha chacha ka WhatsApp number daalo
   // format: 91 + 10 digit number (without + sign)
-  var phone = "91XXXXXXXXXX";
+  var phone = "91 9783746912";
 
   var url = "https://wa.me/" + phone + "?text=" + encodeURIComponent(msg);
 
@@ -137,4 +137,5 @@ if (btn) {
 // start
 renderMenu();
 renderCart();
+
 
