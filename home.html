@@ -15,23 +15,28 @@
       padding: 0;
     }
 
-    body {
-      height: 100vh;
-      width: 100%;
-      /* 👇 yahi pe tumhari restaurant wali image use ho rahi hai */
-      background:
-        linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.8)),
-        url("maakhan-bhog-front.jpg");
-      background-size: cover;
-      background-position: center;
-      font-family: "Poppins", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      color: #fff;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 16px;
-    }
+  body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+
+  /* 🔥 Background image + halki dark layer */
+  background:
+    linear-gradient(rgba(0,0,0,0.35), rgba(0,0,0,0.65)),
+    url("maakhan-bhog.jpg");
+
+  /* yahan change kiya hai 👇 */
+  background-size: contain;      /* poori image dikhane ke liye */
+  background-position: top center;
+  background-repeat: no-repeat;
+  background-color: #000;        /* niche ka area black rahega */
+
+  min-height: 100vh;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
 
     .hero-content {
       max-width: 900px;
@@ -137,4 +142,5 @@
     }
   </script>
 </body>
+
 </html>
