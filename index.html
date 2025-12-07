@@ -1,19 +1,34 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Maakhan Bhog Menu</title>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <title>Maakhan Bhog Restaurant</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+  <div class="app">
+    <h1>🍽 Maakhan Bhog Restaurant</h1>
+    <h3 id="table-info">Table No: Not Provided</h3>
 
-<h1 align="center">🍽 Maakhan Bhog Restaurant</h1>
-<h2 align="center">Digital Menu</h2>
+    <div class="layout">
+      <div class="menu-section">
+        <h2>Menu</h2>
+        <div id="menu"></div>
+      </div>
 
-<div id="menu"></div>
+      <div class="cart-section">
+        <h2>Your Order</h2>
+        <div id="cart"></div>
+        <p id="total">Total: ₹0</p>
+        <button id="place-order-btn">Place Order</button>
+        <small class="note">
+          * On tapping "Place Order", your order will be sent to restaurant's WhatsApp.
+        </small>
+      </div>
+    </div>
+  </div>
 
-<script src="menu.js"></script>
-
+  <script src="menu.js"></script>
 </body>
 </html>
