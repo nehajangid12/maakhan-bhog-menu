@@ -1,90 +1,35 @@
-// ---------- MENU DATA ----------
 const menu = [
   { id: 1, name: "Paneer Butter Masala", price: 220 },
-  { id: 2, name: "Dal Tadka",             price: 160 },
-  { id: 3, name: "Butter Naan",           price: 40  },
-  { id: 4, name: "Tandoori Roti",         price: 25  }
+  { id: 2, name: "Shahi Paneer", price: 240 },
+  { id: 3, name: "Dal Makhani", price: 190 },
+  { id: 4, name: "Jeera Rice", price: 120 },
+  { id: 5, name: "Butter Naan", price: 40 },
+  { id: 6, name: "Tandoori Roti", price: 25 },
+  { id: 7, name: "Cold Drink", price: 40 },
+  { id: 8, name: "Mineral Water", price: 20 }
 ];
 
-// ---------- TABLE NUMBER FROM URL ----------
-const params  = new URLSearchParams(window.location.search);
+// Table number
+const params = new URLSearchParams(window.location.search);
 const tableNo = params.get("table") || "Not Provided";
-document.getElementById("table").innerText = "Table No: " + tableNo;
 
-// ---------- CART ----------
-let cart = [];
+// show table number
+const tableDiv = document.createElement("h3");
+tableDiv.innerText = "Table No: " + tableNo;
+document.body.prepend(tableDiv);
 
-// MENU SHOW
-function renderMenu() {
-  const menuDiv = document.getElementById("menu");
-  menuDiv.innerHTML = ""; // clear
+// menu render
+const menuDiv = document.getElementById("menu");
 
-  menu.forEach(function (item) {
-    const div = document.createElement("div");
-    div.className = "item";
+menu.forEach(item => {
+  const div = document.createElement("div");
+  div.style.padding = "10px";
+  div.style.borderBottom = "1px solid gray";
 
-    // text
-    const info = document.createElement("span");
-    info.textContent = item.name + " - ₹" + item.price;
+  div.innerHTML = `
+    <strong>${item.name}</strong><br>
+    Price: ₹${item.price}
+  `;
 
-    // button
-    const btn = document.createElement("button");
-    btn.textContent = "Add";
-    btn.onclick = function () {
-      addItem(item.id);
-    };
-
-    div.appendChild(info);
-    div.appendChild(btn);
-    menuDiv.appendChild(div);
-  });
-}
-
-// ADD ITEM
-function addItem(id) {
-  const item = menu.find(function (m) { return m.id === id; });
-  cart.push(item);
-  renderCart();
-}
-
-// CART SHOW
-function renderCart() {
-  const cartDiv = document.getElementById("cart");
-  cartDiv.innerHTML = "";
-  let total = 0;
-
-  cart.forEach(function (item) {
-    const p = document.createElement("p");
-    p.textContent = item.name + " - ₹" + item.price;
-    cartDiv.appendChild(p);
-    total += item.price;
-  });
-
-  document.getElementById("total").innerText = "Total: ₹" + total;
-}
-
-// PLACE ORDER
-document.getElementById("placeOrder").onclick = function () {
-  if (cart.length === 0) {
-    alert("No items selected");
-    return;
-  }
-
-  let msg = "Order for Table " + tableNo + ":\n\n";
-  let total = 0;
-
-  cart.forEach(function (item) {
-    msg += item.name + " - ₹" + item.price + "\n";
-    total += item.price;
-  });
-
-  msg += "\nTotal: ₹" + total;
-
-  alert(msg);
-  cart = [];
-  renderCart();
-};
-
-// INITIAL RENDER
-renderMenu();
-renderCart();
+  menuDiv.appendChild(div);
+});
