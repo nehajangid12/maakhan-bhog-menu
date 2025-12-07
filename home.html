@@ -38,20 +38,21 @@
   text-align: center;
 }
 
-    .hero {
-  min-height: 100vh;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  background-image:
-    linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.9)),
-    url("PASTE-IMAGE-URL-HERE");
-
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+.hero {
+    min-height: 100vh;
+    /* yahan local image use kar rahe hain */
+    background-image: linear-gradient(
+        rgba(0, 0, 0, 0.45),
+        rgba(0, 0, 0, 0.75)
+    ), url("maakhan-bg.jpg");
+    background-size: cover;       /* full screen ka cover */
+    background-position: center;  /* beech me image */
+    background-repeat: no-repeat;
+    background-attachment: fixed; /* scroll par bhi fix */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
 }
 
     .hero-content {
@@ -160,4 +161,5 @@
 </body>
 
 </html>
+
 
