@@ -2,31 +2,44 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Maakhan Bhog Restaurant</title>
+  <title>Maakhan Bhog Menu</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
 </head>
 <body>
   <div class="app">
-    <h1>Maakhan Bhog Restaurant</h1>
-    <h3 id="table-text">Table No: Not Provided</h3>
+
+  <div class="menu-header">
+  <div class="menu-header-content">
+    <div class="menu-logo">Maakhan Bhog Menu</div>
+    <div class="menu-subtitle">CHOOSE YOUR FAVOURITE DISHES</div>
+    <div id="table-text" class="table-label">Table No: Not Provided</div>
+  </div>
+</div>
 
     <div class="layout">
-      <div class="menu-section">
-        <h2>Menu</h2>
-        <div id="menu"></div>
-      </div>
+      <!-- LEFT : MENU -->
+      <section class="menu-section">
+        <h2 class="section-heading">Our Specialities</h2>
+        <div id="menu" class="menu-grid"></div>
+      </section>
 
-      <div class="cart-section">
-        <h2>Your Order</h2>
-        <div id="cart"></div>
-        <p id="total">Total: ₹0</p>
-        <button id="placeOrder">Place Order</button>
-      </div>
+      <!-- RIGHT : CART -->
+      <aside class="cart-section">
+        <h2 class="section-heading">Your Order</h2>
+        <div id="cart" class="cart-list"></div>
+        <p id="total" class="cart-total">Total: ₹0</p>
+        <button id="placeOrder" class="place-btn">Place Order</button>
+        <p class="cart-note">
+          * On tapping "Place Order", your order will be sent to restaurant's WhatsApp.
+        </p>
+      </aside>
     </div>
   </div>
 
-  <!-- v=1 sirf cache clear ke liye -->
-  <script src="menu.js?v=1"></script>
+  <!-- v=2 just cache clear -->
+  <script src="menu.js?v=2"></script>
 </body>
 </html>
