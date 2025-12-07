@@ -1,4 +1,4 @@
-// ---------- MENU ITEMS ----------
+// ------- SIMPLE MENU DATA -------
 const menu = [
   { id: 1, name: "Paneer Butter Masala", price: 220 },
   { id: 2, name: "Shahi Paneer", price: 240 },
@@ -10,144 +10,156 @@ const menu = [
   { id: 8, name: "Mineral Water", price: 20 }
 ];
 
-// ---------- TABLE NUMBER FROM URL ----------
+// ------- TABLE NUMBER (optional) -------
 const params = new URLSearchParams(window.location.search);
 const tableNo = params.get("table") || "Not Provided";
-document.getElementById("table-info").innerText = "Table No: " + tableNo;
+const tableInfoEl = document.getElementById("table-info");
+if (tableInfoEl) {
+  tableInfoEl.innerText = "Table No: " + tableNo;
+}
 
-// ---------- CART ----------
+// ------- CART DATA -------
 let cart = [];
 
-// add item
+// item cart me add karo
 function addToCart(id) {
-  const item = menu.find(m => m.id === id);
-  if (!item) return;
-
-  const existing = cart.find(c => c.id === id);
-  if (existing) {
-    existing.qty += 1;
-  } else {
-    cart.push({ ...item, qty: 1 });
+  // menu me item dhoondo
+  let item = null;
+  for (let i = 0; i < menu.length; i++) {
+    if (menu[i].id === id) {
+      item = menu[i];
+      break;
+    }
   }
-  renderCart();
-}
-
-// decrease item
-function decreaseItem(id) {
-  const existing = cart.find(c => c.id === id);
-  if (!existing) return;
-  existing.qty -= 1;
-  if (existing.qty <= 0) {
-    cart = cart.filter(c => c.id !== id);
-  }
-  renderCart();
-}
-
-// ---------- RENDER MENU ----------
-function renderMenu() {
-  const menuDiv = document.getElementById("menu");
-  menuDiv.innerHTML = "";
-
-  menu.forEach(item => {
-    const row = document.createElement("div");
-    row.className = "menu-item";
-
-    row.innerHTML = `
-      <div>
-        <div class="item-name">${item.name}</div>
-        <div class="item-price">₹${item.price}</div>
-      </div>
-      <button class="btn-add" data-id="${item.id}">Add +</button>
-    `;
-
-    menuDiv.appendChild(row);
-  });
-
-  // attach click for all buttons
-  document.querySelectorAll(".btn-add").forEach(btn => {
-    btn.addEventListener("click", () => {
-      const id = Number(btn.getAttribute("data-id"));
-      addToCart(id);
-    });
-  });
-}
-
-// ---------- RENDER CART ----------
-function renderCart() {
-  const cartDiv = document.getElementById("cart");
-  const totalP = document.getElementById("total");
-
-  if (cart.length === 0) {
-    cartDiv.innerHTML = "<p>No items added yet.</p>";
-    totalP.innerText = "Total: ₹0";
+  if (!item) {
     return;
   }
 
-  let total = 0;
-  cartDiv.innerHTML = "";
+  // cart me already hai to qty++
+  let found = null;
+  for (let j = 0; j < cart.length; j++) {
+    if (cart[j].id === id) {
+      found = cart[j];
+      break;
+    }
+  }
 
-  cart.forEach(item => {
-    total += item.price * item.qty;
-
-    const row = document.createElement("div");
-    row.className = "cart-item";
-    row.innerHTML = `
-      <div>
-        <div class="item-name">${item.name}</div>
-        <div class="item-price">₹${item.price} x ${item.qty}</div>
-      </div>
-      <div class="qty-buttons">
-        <button class="btn-qty" data-id="${item.id}" data-action="dec">-</button>
-        <button class="btn-qty" data-id="${item.id}" data-action="inc">+</button>
-      </div>
-    `;
-    cartDiv.appendChild(row);
-  });
-
-  totalP.innerText = "Total: ₹" + total;
-
-  // quantity buttons
-  document.querySelectorAll(".btn-qty").forEach(btn => {
-    const id = Number(btn.getAttribute("data-id"));
-    const action = btn.getAttribute("data-action");
-    btn.addEventListener("click", () => {
-      if (action === "inc") addToCart(id);
-      else decreaseItem(id);
+  if (found) {
+    found.qty = found.qty + 1;
+  } else {
+    cart.push({
+      id: item.id,
+      name: item.name,
+      price: item.price,
+      qty: 1
     });
-  });
+  }
+
+  renderCart();
 }
 
-// ---------- PLACE ORDER (WHATSAPP) ----------
+// ------- CART KO SCREEN PAR DIKHAO -------
+function renderCart() {
+  const cartDiv = document.getElementById("cart");
+  const totalEl = document.getElementById("total");
+
+  if (!cartDiv || !totalEl) {
+    return;
+  }
+
+  if (cart.length === 0) {
+    cartDiv.innerHTML = "<p>No items added yet.</p>";
+    totalEl.innerText = "Total: ₹0";
+    return;
+  }
+
+  let html = "";
+  let total = 0;
+
+  for (let i = 0; i < cart.length; i++) {
+    const c = cart[i];
+    const lineTotal = c.price * c.qty;
+    total = total + lineTotal;
+
+    html =
+      html +
+      "<p>" +
+      c.name +
+      " x " +
+      c.qty +
+      " = ₹" +
+      lineTotal +
+      "</p>";
+  }
+
+  cartDiv.innerHTML = html;
+  totalEl.innerText = "Total: ₹" + total;
+}
+
+// ------- MENU KO SCREEN PAR DIKHAO -------
+function renderMenu() {
+  const menuDiv = document.getElementById("menu");
+  if (!menuDiv) {
+    return;
+  }
+
+  let html = "";
+
+  for (let i = 0; i < menu.length; i++) {
+    const item = menu[i];
+    html =
+      html +
+      "<div>" +
+      "<strong>" +
+      item.name +
+      "</strong><br>" +
+      "Price: ₹" +
+      item.price +
+      " " +
+      "<button onclick='addToCart(" +
+      item.id +
+      ")'>Add</button>" +
+      "<hr>" +
+      "</div>";
+  }
+
+  menuDiv.innerHTML = html;
+}
+
+// ------- PLACE ORDER (abhi sirf alert) -------
 function placeOrder() {
   if (cart.length === 0) {
     alert("Please add at least one item.");
     return;
   }
 
+  let message = "Table: " + tableNo + "\n\n";
   let total = 0;
-  let lines = cart.map(item => {
-    const lineTotal = item.price * item.qty;
-    total += lineTotal;
-    return ${item.name} x ${item.qty} = ₹${lineTotal};
-  });
 
-  const message =
-    New order from Table: ${tableNo}\n\n +
-    lines.join("\n") +
-    \n\nTotal: ₹${total};
+  for (let i = 0; i < cart.length; i++) {
+    const c = cart[i];
+    const lineTotal = c.price * c.qty;
+    total = total + lineTotal;
+    message =
+      message +
+      c.name +
+      " x " +
+      c.qty +
+      " = ₹" +
+      lineTotal +
+      "\n";
+  }
 
-  // 👉 yahan pe restaurant ka WhatsApp number daalo
-  const phone = "91XXXXXXXXXX"; // for example 91 + 10-digit number
+  message = message + "\nTotal: ₹" + total;
 
-  const url =
-    "https://wa.me/" + phone + "?text=" + encodeURIComponent(message);
-
-  // WhatsApp open
-  window.location.href = url;
+  alert("ORDER SUMMARY:\n\n" + message);
 }
 
-// button listener
-document.getElementById("place-order-btn").addEventListener("click", placeOrder);
+// button ka click connect karo
+const placeBtn = document.getElementById("place-order-btn");
+if (placeBtn) {
+  placeBtn.addEventListener("click", placeOrder);
+}
 
 // start
 renderMenu();
