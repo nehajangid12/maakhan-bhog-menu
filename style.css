@@ -530,3 +530,39 @@ h1, h2, h3, p, span, small {
   font-weight: 600;
   text-shadow: 0 0 4px black;
 }
+
+/* ========= MOBILE FIXES (phone view) ========= */
+@media (max-width: 768px) {
+  /* Upar wala Maakhan Bhog Menu banner chhota karo */
+  .menu-header {
+    height: 210px;              /* pehle jitna bhi tha usse kam */
+  }
+
+  /* Title thoda chhota */
+  .menu-title {
+    font-size: 2.1rem;
+  }
+
+  /* Subtitle + Table No. readable & light */
+  .menu-subtitle,
+  .table-info {
+    font-size: 0.85rem;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.6);
+  }
+
+  /* “Our Specialities” card upar chipak ke na aaye */
+  .menu-section {
+    margin-top: 8px;
+  }
+
+  /* Layout column me: pehle menu, fir cart (ye shayad already hoga,
+     but ensure kar do) */
+  .layout {
+    flex-direction: column;
+  }
+
+  .cart-section {
+    margin-top: 10px;
+  }
+}
+
