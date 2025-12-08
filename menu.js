@@ -1,4 +1,4 @@
-------------- TABLE NUMBER -------------
+// ------------- TABLE NUMBER -------------
 
 function getTableNumber() {
   var query = window.location.search; // ?table=1
