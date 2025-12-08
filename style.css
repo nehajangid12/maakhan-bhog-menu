@@ -538,3 +538,47 @@ h1, h2, h3, p, span, small {
   opacity: 1 !important;
   visibility: visible !important;
 }
+
+/* Table input responsive box */
+.table-box {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10px;
+  flex-wrap: wrap;
+}
+
+#tableInput {
+  padding: 7px 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  width: 140px;
+}
+
+.table-box button {
+  padding: 7px 12px;
+  background: green;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.table-label {
+  font-weight: bold;
+  margin-top: 6px;
+  color: #333;
+}
+
+/* Mobile adjust */
+@media (max-width: 600px) {
+  #tableInput {
+    width: 100px;
+    font-size: 14px;
+  }
+
+  .table-box {
+    justify-content: center;
+  }
+}
