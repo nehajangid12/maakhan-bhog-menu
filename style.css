@@ -530,3 +530,8 @@ h1, h2, h3, p, span, small {
   font-weight: 600;
   text-shadow: 0 0 4px black;
 }
+
+#yourOrder * {
+  color: black !important;
+}
+
