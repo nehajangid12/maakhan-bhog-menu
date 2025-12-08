@@ -531,7 +531,10 @@ h1, h2, h3, p, span, small {
   text-shadow: 0 0 4px black;
 }
 
-#yourOrder * {
-  color: black !important;
+/* FIX DISH NAME NOT VISIBLE IN YOUR ORDER */
+.cart-list,
+.cart-list * {
+  color: #000 !important;
+  opacity: 1 !important;
+  visibility: visible !important;
 }
-
