@@ -1,347 +1,140 @@
-/* ---------- GLOBAL ---------- */
-
+/* RESET */
 * {
-  box-sizing: border-box;
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
+  font-family: system-ui, sans-serif;
 }
 
 body {
-  margin: 0;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  /* Light background image */
-  background:
-    linear-gradient(180deg, rgba(255,255,255,0.92), rgba(255,255,255,0.92)),
-    url("bg.jpg") center / cover no-repeat fixed;
+  min-height: 100vh;
+  background: url('bg.jpg') center/cover no-repeat fixed;
 }
 
-/* Main card container */
-.app {
-  max-width: 1100px;
-  margin: 16px auto;
-  padding: 16px;
-  border-radius: 20px;
-  background: rgba(255, 255, 255, 0.9);
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.15);
-}
-
-/* ---------- HEADER STRIP ---------- */
-
-.top-header {
-  margin-bottom: 16px;
-}
-
-.menu-header {
-  position: relative;
-  width: 100%;
-  height: 220px;
-  border-radius: 18px;
-  overflow: hidden;
-  background:
-    linear-gradient(180deg, rgba(0,0,0,0.45), rgba(0,0,0,0.8)),
-    url("maakhan-bhog-front.jpg") center / cover no-repeat;
-}
-
-/* Dark overlay already above, extra layer not needed but keeping class for safety */
-.menu-overlay {
-  position: absolute;
+/* Light background overlay */
+body::before {
+  content: "";
+  position: fixed;
   inset: 0;
+  background: rgba(255,255,255,0.75);
+  z-index: -1;
+}
+
+/* HEADER */
+.menu-header {
+  width: 100%;
+  min-height: 260px;
+  background: linear-gradient(rgba(0,0,0,0.3),rgba(0,0,0,0.3)), url('maakhab-bhog-front.jpg') center/cover no-repeat;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .menu-header-content {
-  position: relative;
-  z-index: 1;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
   text-align: center;
   color: #fff;
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.7);
-  padding: 0 12px;
+  padding: 15px;
 }
 
-.menu-logo-circle {
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  background: #ffcc66;
-  color: #4a2a00;
-  font-weight: 700;
-  font-size: 18px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 4px;
-}
-
-.menu-title {
-  font-family: "Great Vibes", cursive;
-  font-size: 2.3rem;
-  letter-spacing: 1px;
-  color: #ffde7b;
+.menu-logo {
+  font-family: 'Great Vibes', cursive;
+  font-size: 48px;
+  color: gold;
 }
 
 .menu-subtitle {
-  font-size: 0.9rem;
-  margin-top: 4px;
-  opacity: 0.9;
+  font-size: 16px;
+  margin-top: 6px;
 }
 
-.table-info {
+.table-label {
+  color: yellow;
+  font-size: 14px;
   margin-top: 4px;
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: #ffeaa7;
 }
 
-/* ---------- LAYOUT ---------- */
-
+/* MAIN LAYOUT */
 .layout {
-  display: flex;
-  gap: 16px;
-  align-items: flex-start;
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 15px;
+  padding: 12px;
 }
 
-/* left: menu list */
-.menu-section {
-  flex: 2;
-  background: rgba(255, 255, 255, 0.9);
-  border-radius: 18px;
-  padding: 14px;
+/* MENU GRID */
+.menu-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit,minmax(150px,1fr));
+  gap: 12px;
 }
 
-/* right: cart */
-.cart-section {
-  flex: 1;
-  background: rgba(255, 255, 255, 0.95);
-  border-radius: 18px;
-  padding: 14px;
-}
-
-/* section headings */
-.section-heading {
-  font-size: 1.1rem;
-  font-weight: 700;
-  margin-bottom: 8px;
-  color: #333;
-}
-
-/* ---------- MENU CARDS ---------- */
-
-/* container where JS injects cards */
-#menu {
-  margin-top: 10px;
-}
-
-/* Grid layout – 2 cards per row on desktop */
-.menu-grid,
-#menu {
-  display: grid !important;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 14px;
-}
-
-/* card style – works for both .menu-card and .menu-item */
-.menu-card,
-.menu-item {
-  background: #ffffff;
-  border-radius: 16px;
+.menu-card {
+  background: white;
+  border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.08);
-  display: flex;
-  flex-direction: column;
+  box-shadow: 0 5px 10px rgba(0,0,0,0.15);
 }
 
-/* image on top */
-.menu-photo {
+.menu-card img {
   width: 100%;
-  height: 180px;
+  height: 140px;
   object-fit: cover;
-  display: block;
 }
 
-/* text area */
 .menu-info {
-  padding: 10px 12px 12px 12px;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
+  padding: 8px;
 }
 
-.menu-name {
-  font-weight: 600;
-  font-size: 0.98rem;
-  color: #333;
+.menu-info h3 {
+  font-size: 14px;
+  font-weight: bold;
 }
 
-.menu-price {
-  font-size: 0.9rem;
-  color: #777;
+.price {
+  font-weight: bold;
+  color: #2f7d32;
 }
 
-/* Add button – small, right side */
-.menu-footer {
-  margin-top: 6px;
-  display: flex;
-  justify-content: flex-end;
-}
-
-.menu-add-btn,
-.menu-item button {
-  padding: 6px 14px;
-  border-radius: 999px;
+.add-btn {
+  background: orange;
   border: none;
-  background: #ffb74d;
-  color: #4a2a00;
-  font-size: 0.85rem;
-  font-weight: 600;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
-}
-
-.menu-add-btn::before,
-.menu-item button::before {
-  content: "+";
-  font-weight: 700;
-}
-
-.menu-add-btn:hover,
-.menu-item button:hover {
-  background: #ffa726;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.18);
-  transform: translateY(-1px);
-}
-
-/* ---------- CART SIDE ---------- */
-
-.cart-list {
-  margin-top: 8px;
-  min-height: 40px;
-}
-
-.cart-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 0.9rem;
-  padding: 4px 0;
-  border-bottom: 1px solid #eee;
-}
-
-.cart-item-name {
-  max-width: 140px;
-}
-
-.cart-remove-btn {
-  padding: 3px 8px;
-  border-radius: 999px;
-  border: none;
-  background: #ffe9e9;
-  color: #c62828;
-  font-size: 0.75rem;
-  cursor: pointer;
-}
-
-.cart-total {
-  margin-top: 10px;
-  font-weight: 600;
-  font-size: 1rem;
-}
-
-/* Place order button */
-.place-btn,
-#placeOrder {
-  width: 100%;
-  margin-top: 12px;
-  padding: 10px;
-  border-radius: 999px;
-  border: none;
-  background: #1b5e20;
   color: #fff;
-  font-size: 0.95rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+  padding: 4px 8px;
+  font-size: 12px;
+  border-radius: 6px;
+  float: right;
 }
 
-.place-btn:hover,
-#placeOrder:hover {
-  background: #145017;
-  transform: translateY(-1px);
-  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.25);
+/* CART */
+.cart-section {
+  background: white;
+  border-radius: 14px;
+  padding: 12px;
+  height: fit-content;
+  box-shadow: 0 5px 10px rgba(0,0,0,0.15);
 }
 
-.cart-note {
-  margin-top: 6px;
-  font-size: 0.75rem;
-  color: #666;
+.place-btn {
+  width: 100%;
+  background: green;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 8px;
+  margin-top: 10px;
 }
 
-/* ---------- MOBILE RESPONSIVE ---------- */
-
-/* ---------- MOBILE RESPONSIVE (FIXED) ---------- */
+/* ✅ MOBILE FIX */
 @media (max-width: 768px) {
-  .app {
-    margin: 8px;
-    padding: 10px;
-    border-radius: 14px;
-  }
-
-  .menu-header {
-    height: 200px;
-    border-radius: 14px;
-  }
-
-  .menu-header-content {
-    padding: 0 10px;
-  }
-
-  .menu-title {
-    font-size: 1.9rem;
-  }
-
-  /* FLEX hata ke simple block layout kar diya */
   .layout {
-    display: block;          /* no side-by-side on mobile */
-  }
-
-  .menu-section,
-  .cart-section {
-    width: 100%;
-    padding: 10px;
-    border-radius: 14px;
-    margin-top: 12px;
-  }
-
-  /* menu upar, cart neeche */
-  .menu-section {
-    order: 1;
-    min-height: 260px;       /* force space for menu cards */
-  }
-
-  .cart-section {
-    order: 2;
-  }
-
-  /* 1 card per row */
-  #menu {
-    display: grid !important;
     grid-template-columns: 1fr;
-    gap: 12px;
-    margin-top: 10px;
   }
 
-  .menu-card,
-  .menu-item {
-    display: block;
+  .menu-grid {
+    grid-template-columns: repeat(2,1fr);
   }
 
-  .menu-photo {
-    height: 160px;
+  .cart-section {
+    order: -1;
   }
 }
