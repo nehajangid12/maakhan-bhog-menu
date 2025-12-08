@@ -125,8 +125,8 @@ function placeOrder() {
   }
 
   var msg = "New order from Table: " + tableNo + "\n\n";
-  var total = 0;
-
+  var tableNo = localStorage.getItem("tableNo") || "Not Provided";
+var msg = "New order from Table: " + tableNo + "\n\n";
   for (var i = 0; i < cart.length; i++) {
     var c = cart[i];
     msg += c.name + " - ₹" + c.price + "\n";
@@ -168,3 +168,24 @@ function removeItem(index) {
   cart.splice(index, 1);
   renderCart();
 }
+
+function saveTable() {
+  const table = document.getElementById("tableInput").value;
+
+  if (table === "") {
+    alert("Please enter table number!");
+    return;
+  }
+
+  localStorage.setItem("tableNo", table);
+  document.getElementById("table-text").innerText = "Table No: " + table;
+}
+
+// page reload pe table no load karna
+window.addEventListener("load", () => {
+  const savedTable = localStorage.getItem("tableNo");
+  if (savedTable) {
+    document.getElementById("table-text").innerText = "Table No: " + savedTable;
+  }
+});
+
