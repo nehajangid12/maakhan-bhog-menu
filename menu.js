@@ -1,5 +1,5 @@
 // ------------- TABLE NUMBER -------------
-
+var pendingPopup = false;
 function getTableNumber() {
   var query = window.location.search; // ?table=1
   var table = "Not Provided";
@@ -21,7 +21,9 @@ function getTableNumber() {
   return table;
 }
 
+// URL se aaya hua table no (global)
 var tableNo = getTableNumber();
+
 
 // ------------- MENU DATA -------------
 
@@ -32,9 +34,10 @@ var menu = [
   { id: 4, name: "Jeera Rice",           price: 120, img: "https://nishkitchen.com/wp-content/uploads/2019/03/Jeera-Rice-1B-480x480.jpg" },
   { id: 5, name: "Butter Naan",          price: 40,  img: "https://img.freepik.com/premium-photo/butter-naan-delightfully-fluffy-flavorful-indian-bread-straight-from-tandoor-clay-oven_1015980-44475.jpg" },
   { id: 6, name: "Tandoori Roti",        price: 25,  img: "https://tse2.mm.bing.net/th/id/OIP.x-LwN81NhTOgLkABr-XXWwHaEK?pid=Api&P=0&h=180" },
-  { id: 7, name: "Dosa",                 price: 180,  img: "https://tse1.mm.bing.net/th/id/OIP.J5rELBbpNsC98i3tFfgeVgHaHa?pid=Api&P=0&h=180" },
-  { id: 8, name: "Idli-Sambhar",         price: 120,  img: "https://img.freepik.com/premium-photo/idly-sambar-idli-with-sambhar-green-red-chutney-popular-south-indian-breakfast_999766-2544.jpg?w=740" }
+  { id: 7, name: "Dosa",                 price: 180, img: "https://tse1.mm.bing.net/th/id/OIP.J5rELBbpNsC98i3tFfgeVgHaHa?pid=Api&P=0&h=180" },
+  { id: 8, name: "Idli-Sambhar",         price: 120, img: "https://img.freepik.com/premium-photo/idly-sambar-idli-with-sambhar-green-red-chutney-popular-south-indian-breakfast_999766-2544.jpg?w=740" }
 ];
+
 
 // ------------- CART -------------
 
@@ -56,7 +59,7 @@ function addToCart(id) {
 }
 
 // cart se item hatao (index ke basis pe)
-function removeFromCart(index) {
+function removeItem(index) {
   cart.splice(index, 1);
   renderCart();
 }
@@ -79,16 +82,17 @@ function renderCart() {
   for (var i = 0; i < cart.length; i++) {
     var c = cart[i];
     html +=
-  "<div class='cart-item'>" +
-    "<span>" + c.name + " - ₹" + c.price + "</span>" +
-    "<button onclick='removeItem(" + i + ")' class='remove-btn'>Remove</button>" +
-  "</div>";
+      "<div class='cart-item'>" +
+        "<span>" + c.name + " - ₹" + c.price + "</span>" +
+        "<button onclick='removeItem(" + i + ")' class='remove-btn'>Remove</button>" +
+      "</div>";
     total += c.price;
   }
 
   cartDiv.innerHTML = html;
   totalP.innerHTML = "Total: ₹" + total;
 }
+
 
 // ------------- MENU RENDER -------------
 
@@ -116,7 +120,9 @@ function renderMenu() {
 
   menuDiv.innerHTML = html;
 }
-// ------------- PLACE ORDER (WhatsApp) -------------
+
+
+// ------------- PLACE ORDER (WhatsApp + POPUP) -------------
 
 function placeOrder() {
   if (cart.length === 0) {
@@ -124,9 +130,13 @@ function placeOrder() {
     return;
   }
 
-  var msg = "New order from Table: " + tableNo + "\n\n";
-  var tableNo = localStorage.getItem("tableNo") || "Not Provided";
-var msg = "New order from Table: " + tableNo + "\n\n";
+  // final table number: localStorage > URL > "Not Provided"
+  var savedTable = localStorage.getItem("tableNo");
+  var finalTableNo = savedTable || tableNo || "Not Provided";
+
+  var msg = "New order from Table: " + finalTableNo + "\n\n";
+  var total = 0;
+
   for (var i = 0; i < cart.length; i++) {
     var c = cart[i];
     msg += c.name + " - ₹" + c.price + "\n";
@@ -144,7 +154,8 @@ var msg = "New order from Table: " + tableNo + "\n\n";
     "&text=" +
     encodeURIComponent(msg);
 
-  alert("Redirecting to WhatsApp with this order:\n\n" + msg);
+  // Optional: debug ke liye alert
+  // alert("Redirecting to WhatsApp with this order:\n\n" + msg);
 
   var link = document.createElement("a");
   link.href = url;
@@ -152,22 +163,29 @@ var msg = "New order from Table: " + tableNo + "\n\n";
   document.body.appendChild(link);
   link.click();
   document.body.removeChild(link);
+
+  // ✅ success popup (agar HTML me hai)
+  pendingPopup = true;
 }
 
-// button listener
+
+// ------------- BUTTON LISTENER -------------
+
 var btn = document.getElementById("placeOrder");
 if (btn) {
   btn.onclick = placeOrder;
 }
 
-// start
+
+// ------------- START -------------
+
 renderMenu();
 renderCart();
 
-function removeItem(index) {
-  cart.splice(index, 1);
-  renderCart();
-}
+
+// removeItem already upar defined
+
+// ------------- TABLE SAVE / LOAD -------------
 
 function saveTable() {
   const table = document.getElementById("tableInput").value;
@@ -187,5 +205,77 @@ window.addEventListener("load", () => {
   if (savedTable) {
     document.getElementById("table-text").innerText = "Table No: " + savedTable;
   }
+  // jab user wapas is tab par aata hai, tab popup dikhao
+window.addEventListener("focus", function () {
+  if (pendingPopup) {
+    showOrderPopup();
+    pendingPopup = false;
+  }
 });
+});
+
+
+// ------------- ORDER SUCCESS POPUP -------------
+
+function showOrderPopup() {
+  // 🔹 1) Cart empty karo
+  cart = [];
+  renderCart();    // "Your Order" se items hatt jayenge, total 0 ho jayega
+
+  // 🔹 2) Popup dikhाओ
+  var popup = document.getElementById("orderSuccess");
+  if (!popup) return;
+  popup.classList.add("show");
+
+  // 🔹 3) 2 second baad popup band
+  setTimeout(function () {
+    closeOrderPopup();
+  }, 6000);
+}
+
+function closeOrderPopup() {
+  var popup = document.getElementById("orderSuccess");
+  if (!popup) return;
+  popup.classList.remove("show");
+}
+
+// ---------- DARK / LIGHT THEME ----------
+
+function applyTheme(theme) {
+  if (theme === "dark") {
+    document.body.classList.add("dark-theme");
+  } else {
+    document.body.classList.remove("dark-theme");
+  }
+
+  // button text update
+  var btn = document.getElementById("themeToggle");
+  if (btn) {
+    btn.textContent = theme === "dark" ? "☀ Light" : "🌙 Dark";
+  }
+
+  // save preference
+  localStorage.setItem("theme", theme);
+}
+
+function toggleTheme() {
+  var isDark = document.body.classList.contains("dark-theme");
+  applyTheme(isDark ? "light" : "dark");
+}
+
+function initTheme() {
+  var saved = localStorage.getItem("theme") || "light";
+  applyTheme(saved);
+
+  var btn = document.getElementById("themeToggle");
+  if (btn) {
+    btn.addEventListener("click", toggleTheme);
+  }
+}
+
+// page load pe theme set karo
+window.addEventListener("load", initTheme);
+
+
+
 
