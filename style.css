@@ -1,256 +1,567 @@
-/* ---------- RESET ---------- */
-* {
+/* ===== GLOBAL ===== */
+/* ---- GLOBAL BODY ---- */
+body {
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
-}
-
-/* ---------- PAGE BACKGROUND ---------- */
-body {
   min-height: 100vh;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
 
-  /* food wallpaper background (file ka naam bg.jpg rakho) */
-  background: url("bg.jpg") center/cover no-repeat fixed;
+  background: 
+    linear-gradient(rgba(0,0,0,0.35), rgba(0,0,0,0.55)),
+    url("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ1nUq5xjgFHHQTLpEpFJHz4lipqB1H3s02j4kxe3bk60jKxcBpG1aTqqdtiIV50SDx7fY&usqp=CAU");   /* 👈 apni image ka exact naam yahan */
+
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
 }
+/* ===== MAIN WRAPPER ===== */
 
-/* light overlay taaki menu clearly dikhe */
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  background: rgba(255, 255, 255, 0.78);
-  z-index: -1;
-}
-
-/* ---------- APP CONTAINER ---------- */
 .app {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 12px;
+  max-width: 1100px;
+  margin: 40px auto;
+  background: rgba(255,255,255,0.93);
+  /*backdrop-filter: blur(8px);
+  color: #fff;
+  box-shadow: 0 15px 40px rgba(0,0,0,0.6);*/
+  border-radius: 12px;
+  padding: 16px;
 }
 
-/* ---------- HEADER STRIP (Maakhan Bhog Menu) ---------- */
+.menu-section,
+.cart-section {
+  background: rgba(255,255,255,0.1);
+  padding: 16px;
+  border-radius: 14px;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.08);
+}
+
+h1, h2, h3, p, span, small {
+  color: #fff;
+}
+
+/* ===== HEADER ===== */
+/* ---------------- HEADER STRIP WITH IMAGE ---------------- */
 
 .menu-header {
+  position: relative;
   width: 100%;
-  min-height: 220px;
+  height: 230px;                     /* strip ki height */
   border-radius: 18px;
+  margin-bottom: 24px;
   overflow: hidden;
-  margin-bottom: 16px;
 
-  /* front wali photo yaha use karo (file ka naam change ho to yaha update karna) */
-  background:
-    linear-gradient(rgba(0,0,0,0.35), rgba(0,0,0,0.6)),
-    url("maakhan-bhog-front.jpg") center/cover no-repeat;
+  /* background image + dark overlay 
+  background-image:
+    linear-gradient(90deg, rgba(0,0,0,0.65), rgba(0,0,0,0.35)),
+    url("maakhan-bhog-front.jpg");   /* tumhari front wali image */
+ /* background-size: cover;            /* poori strip cover kare */
+ /* background-position: center center;/* beech ke liye 
+  background-repeat: no-repeat;*/
+
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(6px);
 
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
+/* Content ko beech me rakhne ke liye */
 .menu-header-content {
   text-align: center;
   color: #fff;
-  padding: 16px;
 }
 
+/* "Maakhan Bhog Menu" */
 .menu-logo {
   font-family: "Great Vibes", cursive;
-  font-size: 2.8rem;
+  font-size: 3rem;
   color: #ffde7b;
+  letter-spacing: 2px;
+  margin-bottom: 4px;
 }
 
+/* "CHOOSE YOUR FAVOURITE DISHES" */
 .menu-subtitle {
-  margin-top: 4px;
+  font-size: 0.95rem;
   letter-spacing: 3px;
-  font-size: 0.7rem;
   text-transform: uppercase;
+  opacity: 0.9;
+  margin-bottom: 6px;
 }
 
+/* "Table No: 1" */
 .table-label {
-  margin-top: 6px;
   font-size: 0.9rem;
-  font-weight: 600;
-  color: #ffe57f;
+  font-weight: 500;
+  color: #ffeab0;
 }
 
-/* ---------- MAIN LAYOUT (MENU + CART) ---------- */
+/* Mobile tweak */
+@media (max-width: 600px) {
+  .menu-header {
+    height: 200px;
+    border-radius: 0;   /* mobile pe full width strip jaisa feel */
+  }
+
+  .menu-logo {
+    font-size: 2.4rem;
+  }
+
+  .menu-subtitle {
+    font-size: 0.8rem;
+    letter-spacing: 2px;
+  }
+}
+
+/* ===== LAYOUT ===== */
 
 .layout {
-  display: grid;
-  grid-template-columns: 2fr 1fr;
-  gap: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
 }
 
-/* LEFT: MENU SECTION */
-.menu-section {
-  background: rgba(255, 255, 255, 0.96);
-  border-radius: 18px;
-  padding: 16px;
-  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.12);
+@media (min-width: 900px) {
+  .layout {
+    flex-direction: row;
+    align-items: flex-start;
+  }
 }
+
+.menu-section {
+  flex: 2;
+}
+
+.cart-section {
+  flex: 1;
+  background: #fafafa;
+  border-radius: 12px;
+  padding: 12px 12px 16px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.06);
+  position: sticky;
+  top: 10px;
+}
+
+/* ===== HEADINGS ===== */
 
 .section-heading {
-  font-size: 1.1rem;
-  font-weight: 700;
-  margin-bottom: 12px;
+  font-size: 18px;
+  margin-bottom: 10px;
 }
 
-/* Menu grid – cards */
+/* ===== MENU GRID ===== */
+
 .menu-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  grid-template-columns: repeat(2, minmax(220px, 1fr));
   gap: 14px;
 }
 
-/* generic card styling (agar menu.js different class use kare tab bhi) */
-.menu-grid > div {
+@media (max-width: 700px) {
+  .menu-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ===== MENU CARD ===== */
+
+.menu-card {
   background: #ffffff;
   border-radius: 14px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12);
   overflow: hidden;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.18);
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
 }
 
-/* image inside cards */
-.menu-grid img {
+.menu-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.22);
+}
+
+/* IMAGE */
+
+.menu-card img {
   width: 100%;
-  height: 150px;
+  height: 180px;             /* 👉 yahan se image height badh rahi hai */
   object-fit: cover;
-  display: block;
 }
 
-/* text info area */
+/* CONTENT */
+
 .menu-info {
-  padding: 10px;
+  padding: 8px 10px 2px;
 }
 
-/* dish name */
-.menu-info h3,
-.menu-grid .dish-name {
-  font-size: 0.95rem;
+.menu-name {
+  font-size: 15px;
   font-weight: 700;
   margin-bottom: 4px;
 }
 
-/* price + add button row */
-.menu-meta {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 4px;
-}
-
-.dish-price {
-  font-weight: 700;
+.menu-price {
+  font-size: 14px;
   color: #2e7d32;
-}
-
-/* add button */
-.add-btn {
-  padding: 4px 10px;
-  font-size: 0.8rem;
-  border-radius: 999px;
-  border: none;
-  background: #ffb347;
-  color: #fff;
-  cursor: pointer;
   font-weight: 600;
 }
 
-.add-btn:hover {
+/* BUTTON */
+
+.menu-actions {
+  padding: 8px 10px 12px;
+}
+
+.menu-add-btn {
+  width: 100%;
+  border: none;
+  border-radius: 8px;
   background: #ff9800;
+  color: #fff;
+  padding: 8px 0;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  transition: background 0.15s, transform 0.1s;
 }
 
-/* ---------- RIGHT: CART SECTION ---------- */
-
-.cart-section {
-  background: rgba(255, 255, 255, 0.97);
-  border-radius: 18px;
-  padding: 16px;
-  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.12);
-  height: fit-content;
+.menu-add-btn span.icon {
+  font-size: 16px;
 }
 
-.cart-list p {
-  font-size: 0.9rem;
-  margin: 2px 0;
+.menu-add-btn:hover {
+  background: #fb8c00;
+  transform: translateY(-1px);
+}
+
+/* ===== CART ===== */
+
+.cart-list {
+  min-height: 80px;
+  font-size: 14px;
+}
+
+.cart-item {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+
+.cart-item-name {
+  max-width: 70%;
 }
 
 .cart-total {
   margin-top: 10px;
   font-weight: 700;
+  font-size: 15px;
 }
 
 .place-btn {
   width: 100%;
   margin-top: 10px;
-  padding: 10px;
-  border-radius: 10px;
-  border: none;
+  padding: 9px 0;
   background: #1b5e20;
-  color: #fff;
-  font-size: 0.95rem;
+  border: none;
+  border-radius: 8px;
+  color: #ffffff;
+  font-size: 15px;
   font-weight: 600;
   cursor: pointer;
+  transition: background 0.15s, transform 0.1s;
 }
 
 .place-btn:hover {
-  background: #145019;
+  background: #145017;
+  transform: translateY(-1px);
 }
 
 .cart-note {
   margin-top: 6px;
-  font-size: 0.75rem;
-  opacity: 0.8;
+  font-size: 11px;
+  color: #777;
 }
 
-/* remove button in cart (agar class use kari ho to) */
-.cart-remove-btn {
-  margin-left: 8px;
-  padding: 2px 6px;
-  font-size: 0.7rem;
-  border-radius: 999px;
+/* SMALL DEVICES TWEAKS */
+@media (max-width: 480px) {
+  .title-main {
+    font-size: 22px;
+  }
+  .menu-card img {
+    height: 160px;
+  }
+}
+
+/* ✅ Mobile me "Your Order" box ko LAST me bhejna */
+@media (max-width: 700px) {
+  .layout {
+    flex-direction: column;
+  }
+
+  .cart-section {
+    order: 2;        /* neeche aayega */
+    margin-top: 12px;
+  }
+
+  .menu-section {
+    order: 1;        /* upar rahega */
+  }
+}
+
+
+
+/* Cart items ka layout */
+.cart-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 4px 0;
+  border-bottom: 1px dashed #ddd;
+  font-size: 14px;
+}
+
+/* Remove button style */
+.remove-btn {
+  padding: 2px 8px;
+  font-size: 12px;
+  border-radius: 4px;
   border: none;
-  background: #ff5252;
+  background: #f44336;
   color: #fff;
   cursor: pointer;
 }
 
-/* ---------- MOBILE RESPONSIVE ---------- */
+.remove-btn:hover {
+  opacity: 0.9;
+}
 
+
+
+#menu {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 20px;
+}
+
+.menu-card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.menu-img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+}
+
+.menu-info {
+  padding: 12px;
+}
+
+.menu-name {
+  font-family: 'Playfair Display', serif;
+}
+.menu-bottom-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.menu-price {
+  color: #1b5e20;
+  font-weight: 700;
+}
+
+/* FORCE SMALL ADD BUTTON */
+.menu-add-btn {
+  padding: 4px 10px !important;
+  font-size: 11px !important;
+  width: auto !important;
+  min-width: unset !important;
+  max-width: fit-content !important;
+  border-radius: 20px !important;
+}
+
+/* BUTTON RIGHT CORNER PE RAHE */
+.menu-bottom-row {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+}
+
+.menu-add-btn:hover {
+  transform: scale(1.05);
+}
+
+.cart-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px 0;
+}
+
+.remove-btn {
+  background: #ef5350;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 4px 10px;
+  font-size: 11px;
+  cursor: pointer;
+}
+
+.remove-btn:hover {
+  opacity: 0.85;
+}
+
+/* TOP TITLE STYLE LIKE MAHAL MAAKHAN BHOG */
+.menu-title {
+  font-family: "Great Vibes", cursive;
+  font-size: 3rem;
+  color: #c6892f;
+  text-align: center;
+  letter-spacing: 2px;
+  margin-bottom: 4px;
+}
+
+.menu-subtitle {
+  text-align: center;
+  font-size: 13px;
+  color: #666;
+  margin-bottom: 18px;
+  letter-spacing: 1px;
+}
+
+/* Cart ko white card + dark text do */
+.cart-section {
+  background: rgba(255,255,255,0.96);
+  color: #222;
+}
+
+/* Cart ke andar sab text dark dikhaye de */
+.cart-section h2,
+.cart-section p,
+#total {
+  color: #222;
+}
+
+/* Header ke neeche vala small text */
+.menu-subtitle {
+  font-size: 14px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #f8e0a8;
+  margin: 6px 0 4px;
+  opacity: 0.95;
+}
+
+/* Table No. ko highlight */
+.table-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #ffe28a;
+  text-shadow: 0 0 4px rgba(0, 0, 0, 0.8); /* dark bg pe glow jaisa effect */
+  margin-bottom: 10px;
+}
+
+#table-text {
+  color: #ffe28a;
+}
+
+/* ===== HEADER IMAGE STRIP ===== */
+
+.menu-header {
+  position: relative;
+  height: 200px;
+  background: url("maakhan-bhog-front.jpg") center center / cover no-repeat;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+/* Dark overlay */
+.menu-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+}
+
+/* Header content center */
+.menu-header-content {
+  position: relative;
+  text-align: center;
+  color: #fff;
+  z-index: 2;
+}
+
+/* Title style like welcome page */
+.menu-logo {
+  font-family: 'Great Vibes', cursive;
+  font-size: 3rem;
+  color: #ffda79;
+  margin-bottom: 5px;
+}
+
+/* Subtitle */
+.menu-subtitle {
+  font-size: 14px;
+  letter-spacing: 3px;
+  color: #f2e8c8;
+  text-transform: uppercase;
+}
+
+/* Table no visible */
+.table-label {
+  margin-top: 6px;
+  font-size: 13px;
+  color: #ffe48a;
+  font-weight: 600;
+  text-shadow: 0 0 4px black;
+}
+
+/* ---------- FINAL MOBILE FIX (phone layout) ---------- */
 @media (max-width: 768px) {
+
+  /* App thoda compact */
   .app {
-    padding: 8px;
+    margin: 12px auto;
+    padding: 10px;
   }
 
-  .menu-header {
-    border-radius: 0;
-    min-height: 200px;
-  }
-
-  .menu-logo {
-    font-size: 2.2rem;
-  }
-
+  /* Flex hata ke normal block, taaki order HTML ke hisaab se ho
+     pehle menu-section, phir cart-section */
   .layout {
-    grid-template-columns: 1fr;      /* 🔥 MENU + CART ek column me */
-    gap: 12px;
-    margin-top: 10px;
+    display: block;
   }
 
+  /* Dono sections full width + sticky hatao mobile me */
   .menu-section,
   .cart-section {
-    border-radius: 16px;
-    padding: 12px;
+    width: 100%;
+    margin: 0 0 12px 0;
+    position: static;
   }
 
-  .menu-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));  /* 🔥 phone pe 2 dishes per row */
-    gap: 10px;
+  /* Phone pe 2 dishes ek row me */
+  #menu {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
   }
 
-  .menu-grid img {
-    height: 120px;
+  .menu-card {
+    max-width: 100%;
   }
 }
