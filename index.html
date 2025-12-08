@@ -15,12 +15,18 @@
   <div class="menu-header-content">
     <div class="menu-logo">Maakhan Bhog Menu</div>
     <div class="menu-subtitle">CHOOSE YOUR FAVOURITE DISHES</div>
+
+    <!-- TABLE INPUT + LABEL -->
     <div class="table-box">
-  <input type="text" id="tableInput" placeholder="Enter Table No" />
-  <button onclick="saveTable()">Save</button>
-  <div id="table-text" class="table-label">Table No: Not Provided</div>
-</div>
+      <input type="text" id="tableInput" placeholder="Enter Table No" />
+      <button onclick="saveTable()">Save</button>
+      <div id="table-text" class="table-label">Table No: Not Provided</div>
+    </div>
   </div>
+
+  <!-- THEME BUTTON -->
+  <button id="themeToggle" class="theme-toggle">🌙 Dark</button>
+</div>
 </div>
 
     <div class="layout">
@@ -42,9 +48,18 @@
       </aside>
     </div>
   </div>
+  <div id="orderSuccess" class="order-popup">
+  <div class="order-popup-box">
+    <div class="order-popup-icon">✅</div>
+    <h3>Order Placed!</h3>
+    <p>Your order has been sent to the restaurant's WhatsApp.</p>
+    <button onclick="closeOrderPopup()">OK</button>
+  </div>
+</div>
+
+
 
   <!-- v=2 just cache clear -->
   <script src="menu.js?v=2"></script>
 </body>
 </html>
-
