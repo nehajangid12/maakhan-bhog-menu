@@ -284,6 +284,7 @@ body {
 
 /* ---------- MOBILE RESPONSIVE ---------- */
 
+/* ---------- MOBILE RESPONSIVE (FIXED) ---------- */
 @media (max-width: 768px) {
   .app {
     margin: 8px;
@@ -304,8 +305,9 @@ body {
     font-size: 1.9rem;
   }
 
+  /* FLEX hata ke simple block layout kar diya */
   .layout {
-    flex-direction: column;
+    display: block;          /* no side-by-side on mobile */
   }
 
   .menu-section,
@@ -313,21 +315,30 @@ body {
     width: 100%;
     padding: 10px;
     border-radius: 14px;
+    margin-top: 12px;
   }
 
-  /* Menu first, then cart */
+  /* menu upar, cart neeche */
   .menu-section {
     order: 1;
+    min-height: 260px;       /* force space for menu cards */
   }
 
   .cart-section {
     order: 2;
   }
 
-  /* 1 card per row on mobile */
-  .menu-grid,
+  /* 1 card per row */
   #menu {
+    display: grid !important;
     grid-template-columns: 1fr;
+    gap: 12px;
+    margin-top: 10px;
+  }
+
+  .menu-card,
+  .menu-item {
+    display: block;
   }
 
   .menu-photo {
