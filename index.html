@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Maakhan Bhog Menu</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="app">
+
+  <div class="menu-header">
+  <div class="menu-header-content">
+    <div class="menu-logo">Maakhan Bhog Menu</div>
+    
+    <div class="menu-subtitle">CHOOSE YOUR FAVOURITE DISHES</div>
+
+    <!-- TABLE INPUT + LABEL -->
+    <div class="table-box">
+      <input type="text" id="tableInput" placeholder="Enter Table No" />
+      <button onclick="saveTable()">Save</button>
+      <div id="table-text" class="table-label">Table No: Not Provided</div>
+    </div>
+  </div>
+  
+  <button id="themeToggle" class="theme-toggle">🌙</button>
+</div>
+</div>
+</div>
+
+    <div class="layout">
+      <!-- LEFT : MENU -->
+      <section class="menu-section">
+        <h2 class="section-heading">Our Specialities</h2>
+        <div id="menu" class="menu-grid"></div>
+      </section>
+
+      <!-- RIGHT : CART -->
+<aside class="cart-section">
+  <h2 class="section-heading">Your Order</h2>
+
+  <!-- cart items yahan render honge -->
+  <div id="cart" class="cart-list"></div>
+
+  <!-- ✅ yahi hai Total line -->
+  <p id="total" class="cart-total">Total: ₹0</p>
+
+  <div class="notes-box">
+  <h3 class="notes-title">Special Instructions</h3>
+
+  <textarea id="specialNotes"
+    placeholder="Anything else? e.g. 'Serve hot', 'No coriander', 'Split bill by 2'">
+  </textarea>
+</div>
+
+  <!-- place order button -->
+  <button id="placeOrder" class="place-btn">Place Order</button>
+
+  <p class="cart-note">
+    * On tapping "Place Order", your order will be sent to restaurant's WhatsApp.
+  </p>
+</aside>
+    </div>
+  </div>
+
+   <!-- v=2 just cache clear -->
+
+  <!-- 🌙 Dark / Light theme toggle -->
+  <script>
+    (function () {
+      const THEME_KEY = "mb_theme";
+
+      function applyTheme(theme) {
+        const body = document.body;
+
+        if (theme === "dark") {
+          body.classList.add("dark-theme");
+        } else {
+          body.classList.remove("dark-theme");
+          theme = "light";
+        }
+
+        const btn = document.getElementById("themeToggle");
+        if (btn) {
+          btn.textContent = theme === "dark" ? "☀ Light" : "🌙 Dark";
+        }
+
+        try {
+          localStorage.setItem(THEME_KEY, theme);
+        } catch (e) {}
+      }
+
+      document.addEventListener("DOMContentLoaded", function () {
+        const saved = localStorage.getItem(THEME_KEY) || "light";
+        applyTheme(saved);
+
+        const btn = document.getElementById("themeToggle");
+        if (!btn) return;
+
+        btn.addEventListener("click", function () {
+          const isDark = document.body.classList.contains("dark-theme");
+          applyTheme(isDark ? "light" : "dark");
+        });
+      });
+    })();
+  </script>
+  <!-- CONFIRMATION POPUP: "I have sent the order..." -->
+  <div id="confirmPopup" class="popup-overlay">
+    <div class="popup-box">
+      <h1>📩</h1>
+      <h3>Send Order on WhatsApp</h3>
+      <p>Please send the order on WhatsApp and then tap the button below.</p>
+      <button id="confirmSentBtn">I have sent the order on WhatsApp</button>
+    </div>
+  </div>
+
+  <!-- FINAL POPUP: "Order Placed!" -->
+  <div id="orderSuccess" class="popup-overlay">
+    <div class="popup-box">
+      <div class="order-popup-icon">✅</div>
+      <h3>Order Placed!</h3>
+      <p>Your order has been sent to Maakhan Bhog.</p>
+      <button id="orderOkBtn">OK</button>
+    </div>
+  </div>
+</div> <!-- .app ka closing div -->
+
+  <!-- baaki pura app ka JS -->
+  <script src="menu.js?v=2"></script>
+</body>
+</html>
