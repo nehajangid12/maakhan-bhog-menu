@@ -1,4 +1,5 @@
 // ------------- TABLE NUMBER -------------
+let leftWhatsApp = false;
 var pendingPopup = false;
 function getTableNumber() {
   var query = window.location.search; // ?table=1
@@ -122,8 +123,7 @@ function renderMenu() {
 }
 
 
-// ------------- PLACE ORDER (WhatsApp + POPUP) -------------
-function placeOrder() {
+/*function placeOrder() {
   if (cart.length === 0) {
     alert("Please add at least one item.");
     return;
@@ -144,7 +144,18 @@ function placeOrder() {
 
   msg += "\nTotal: ₹" + total;
 
-  // 👉 yaha chacha ka WhatsApp number daalo (91 + 10 digit, '+' mat lagana)
+  // ✅ special instructions (checkbox + notes)
+
+  var notesBox = document.getElementById("specialNotes");
+  if (notesBox && notesBox.value.trim() !== "") {
+    extraTexts.push(notesBox.value.trim());
+  }
+
+  if (extraTexts.length > 0) {
+    msg += "\n\nSpecial Instructions:\n- " + extraTexts.join("\n- ");
+  }
+
+  // WhatsApp number
   var phone = "919783746912";
 
   var url =
@@ -160,15 +171,16 @@ function placeOrder() {
   document.body.appendChild(link);
   link.click();
   document.body.removeChild(link);
-  localStorage.setItem("orderDone", "yes");
 
-  // ✅ 3 second baad popup dikhana (user tab tak WhatsApp pe hoga / send karega)
-  setTimeout(function () {
-    showOrderPopup();
-  }, 3000);
-}
+  // yaad rakho ki user WhatsApp pe gaya hai
+  leftWhatsApp = true;
 
-
+  // confirmation popup dikhao
+  var confirmPopup = document.getElementById("confirmPopup");
+  if (confirmPopup) {
+    confirmPopup.classList.add("show");
+  }
+}*/
 // ------------- BUTTON LISTENER -------------
 
 var btn = document.getElementById("placeOrder");
@@ -218,6 +230,127 @@ window.addEventListener("blur", function () {
     leftAfterOrder = true;
   }
 });
+
+
+
+
+
+// ========= GLOBAL FLAGS (popup flow ke liye) =========
+let orderInProgress = false;   // user ne Place Order dabaya & WhatsApp open hua
+let confirmShown = false;      // confirm popup already dikh chuka hai ya nahi
+
+// ========= PLACE ORDER (WhatsApp + flow start) =========
+function placeOrder() {
+  if (cart.length === 0) {
+    alert("Please add at least one item.");
+    return;
+  }
+
+  // final table number: localStorage > URL > default
+  var savedTable = localStorage.getItem("tableNo");
+  var finalTableNo = savedTable || tableNo || "Not Provided";
+
+  var msg = "New order from Table: " + finalTableNo + "\n\n";
+  var total = 0;
+
+  for (var i = 0; i < cart.length; i++) {
+    var c = cart[i];
+    msg += c.name + " - ₹" + c.price + "\n";
+    total += c.price;
+  }
+
+  msg += "\nTotal: ₹" + total;
+
+  // Special Instructions
+  var notesBox = document.getElementById("specialNotes");
+  if (notesBox && notesBox.value.trim() !== "") {
+    msg += "\n\nSpecial Instructions: " + notesBox.value.trim();
+  }
+
+  // 👉 WhatsApp number
+  var phone = "919783746912";
+
+  var url =
+    "https://api.whatsapp.com/send?phone=" +
+    phone +
+    "&text=" +
+    encodeURIComponent(msg);
+
+  // WhatsApp new tab me open karo
+  var link = document.createElement("a");
+  link.href = url;
+  link.target = "_blank";
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+
+  // Flow start: user ab WhatsApp pe gaya
+  orderInProgress = true;
+  confirmShown = false;
+}
+
+// Place Order button ko nayi placeOrder se bind karo
+var placeBtn = document.getElementById("placeOrder");
+if (placeBtn) {
+  placeBtn.onclick = placeOrder;
+}
+
+// ========= POPUP HELPERS =========
+
+function showConfirmPopup() {
+  var overlay = document.getElementById("confirmPopup");
+  if (overlay) overlay.classList.add("show");
+}
+
+function hideConfirmPopup() {
+  var overlay = document.getElementById("confirmPopup");
+  if (overlay) overlay.classList.remove("show");
+}
+
+function showOrderPopup() {
+  var notesBox = document.getElementById("specialNotes");
+  if(notesBox) notesBox.value = "";
+  // cart clear
+  cart = [];
+  renderCart();
+
+  var overlay = document.getElementById("orderSuccess");
+  if (overlay) overlay.classList.add("show");
+}
+
+function hideOrderPopup() {
+  var overlay = document.getElementById("orderSuccess");
+  if (overlay) overlay.classList.remove("show");
+}
+
+// ========= FOCUS EVENT: WhatsApp se wapas aane par =========
+window.addEventListener("focus", function () {
+  // Sirf tab dikhana hai jab user ne abhi order kiya ho & confirm popup pehle nahi dikhaya
+  if (orderInProgress && !confirmShown) {
+    showConfirmPopup();
+    confirmShown = true;
+  }
+});
+
+// ========= CONFIRM BUTTON: "I have sent the order..." =========
+var confirmBtn = document.getElementById("confirmSentBtn");
+if (confirmBtn) {
+  confirmBtn.addEventListener("click", function () {
+    // user ne haan bola ki WhatsApp pe bhej diya
+    hideConfirmPopup();
+    showOrderPopup();     // ab final "Order Placed!" popup aayega
+    orderInProgress = false;
+    confirmShown = false;
+  });
+}
+
+// ========= ORDER OK BUTTON =========
+var okBtn = document.getElementById("orderOkBtn");
+if (okBtn) {
+  okBtn.addEventListener("click", function () {
+    hideOrderPopup();
+  });
+}
 
 
 
@@ -292,30 +425,46 @@ function initThemeToggle() {
 
 window.addEventListener("load", initThemeToggle);
 
-// ===== ORDER POPUP FUNCTIONS =====
+// ==== ORDER POPUP FUNCTIONS ====
 
-// show popup
+// final "Order Placed" popup
 function showOrderPopup() {
-  // clear cart
+  // cart clear
   cart = [];
   renderCart();
 
-  const popup = document.getElementById("orderSuccess");
-  if (popup) popup.classList.add("show");
-}
-
-// close popup
-function closeOrderPopup() {
-  const popup = document.getElementById("orderSuccess");
-  if (popup) popup.classList.remove("show");
-}
-
-// WhatsApp ke baad popup show karo
-window.addEventListener("focus", function () {
-  let done = localStorage.getItem("orderDone");
-
-  if (done === "yes") {
-    showOrderPopup();
-    localStorage.removeItem("orderDone");
+  var popup = document.getElementById("orderSuccess");
+  if (popup) {
+    popup.classList.add("show");
   }
-});
+}
+
+// close button (OK)
+function closeOrderPopup() {
+  var popup = document.getElementById("orderSuccess");
+  if (popup) {
+    popup.classList.remove("show");
+  }
+}
+
+// ==== ORDER POPUP FUNCTIONS ====
+
+// final "Order Placed" popup
+function showOrderPopup() {
+  // cart clear
+  cart = [];
+  renderCart();
+
+  var popup = document.getElementById("orderSuccess");
+  if (popup) {
+    popup.classList.add("show");
+  }
+}
+
+// close button (OK)
+function closeOrderPopup() {
+  var popup = document.getElementById("orderSuccess");
+  if (popup) {
+    popup.classList.remove("show");
+  }
+}
