@@ -38,15 +38,30 @@
       </section>
 
       <!-- RIGHT : CART -->
-      <aside class="cart-section">
-        <h2 class="section-heading">Your Order</h2>
-        <div id="cart" class="cart-list"></div>
-        <p id="total" class="cart-total">Total: ₹0</p>
-        <button id="placeOrder" class="place-btn">Place Order</button>
-        <p class="cart-note">
-          * On tapping "Place Order", your order will be sent to restaurant's WhatsApp.
-        </p>
-      </aside>
+<aside class="cart-section">
+  <h2 class="section-heading">Your Order</h2>
+
+  <!-- cart items yahan render honge -->
+  <div id="cart" class="cart-list"></div>
+
+  <!-- ✅ yahi hai Total line -->
+  <p id="total" class="cart-total">Total: ₹0</p>
+
+  <div class="notes-box">
+  <h3 class="notes-title">Special Instructions</h3>
+
+  <textarea id="specialNotes"
+    placeholder="Anything else? e.g. 'Serve hot', 'No coriander', 'Split bill by 2'">
+  </textarea>
+</div>
+
+  <!-- place order button -->
+  <button id="placeOrder" class="place-btn">Place Order</button>
+
+  <p class="cart-note">
+    * On tapping "Place Order", your order will be sent to restaurant's WhatsApp.
+  </p>
+</aside>
     </div>
   </div>
 
@@ -91,15 +106,26 @@
       });
     })();
   </script>
-  <!-- ORDER SUCCESS POPUP -->
-<div id="orderSuccess" class="order-popup">
-  <div class="order-popup-box">
-    <div class="order-popup-icon">✅</div>
-    <h3>Order Placed!</h3>
-    <p>Your order has been sent to Maakhan Bhog.</p>
-    <button onclick="closeOrderPopup()">OK</button>
+  <!-- CONFIRMATION POPUP: "I have sent the order..." -->
+  <div id="confirmPopup" class="popup-overlay">
+    <div class="popup-box">
+      <h1>📩</h1>
+      <h3>Send Order on WhatsApp</h3>
+      <p>Please send the order on WhatsApp and then tap the button below.</p>
+      <button id="confirmSentBtn">I have sent the order on WhatsApp</button>
+    </div>
   </div>
-</div>
+
+  <!-- FINAL POPUP: "Order Placed!" -->
+  <div id="orderSuccess" class="popup-overlay">
+    <div class="popup-box">
+      <div class="order-popup-icon">✅</div>
+      <h3>Order Placed!</h3>
+      <p>Your order has been sent to Maakhan Bhog.</p>
+      <button id="orderOkBtn">OK</button>
+    </div>
+  </div>
+</div> <!-- .app ka closing div -->
 
   <!-- baaki pura app ka JS -->
   <script src="menu.js?v=2"></script>
