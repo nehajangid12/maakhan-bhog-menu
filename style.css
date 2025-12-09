@@ -666,7 +666,7 @@ body.dark-theme .menu-name{
 }
 
 
-/* ===== ORDER SUCCESS POPUP (PERFECT DARK / LIGHT MODE) ===== */
+/* ===== ORDER SUCCESS POPUP (PERFECT DARK / LIGHT MODE) ===== 
 
 .order-popup {
   position: fixed;
@@ -686,7 +686,7 @@ body.dark-theme .menu-name{
   opacity: 1;
 }
 
-/* POPUP BOX */
+/* POPUP BOX 
 .order-popup-box {
   width: 90%;
   max-width: 330px;
@@ -704,13 +704,13 @@ body.dark-theme .menu-name{
   to { transform: scale(1); opacity: 1; }
 }
 
-/* ICON */
+/* ICON 
 .order-popup-icon {
   font-size: 42px;
   margin-bottom: 10px;
 }
 
-/* TITLE */
+/* TITLE 
 .order-popup-box h3 {
   margin: 6px 0;
   font-size: 20px;
@@ -718,14 +718,14 @@ body.dark-theme .menu-name{
   color: #198754;
 }
 
-/* MESSAGE */
+/* MESSAGE 
 .order-popup-box p {
   font-size: 14px;
   color: #444;
   margin-bottom: 14px;
 }
 
-/* BUTTON */
+/* BUTTON 
 .order-popup-box button {
   background: #198754;
   border: none;
@@ -737,7 +737,7 @@ body.dark-theme .menu-name{
 }
 
 
-/* 🌙 DARK MODE */
+/* 🌙 DARK MODE 
 body.dark-theme .order-popup-box {
   background: #121212;
   color: #ffffff;
@@ -753,4 +753,240 @@ body.dark-theme .order-popup-box p {
 
 body.dark-theme .order-popup-box button {
   background: #22c55e;
+}
+
+
+
+/* ===== POPUPS (confirm + success) ===== 
+
+.order-popup {
+  position: fixed;
+  inset: 0; /* top:0 right:0 bottom:0 left:0 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.6);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+  z-index: 9999;
+}
+
+.order-popup.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.order-popup-box {
+  background: #ffffff;
+  color: #222;
+  padding: 20px 18px;
+  border-radius: 14px;
+  width: 90%;
+  max-width: 320px;
+  text-align: center;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.35);
+}
+
+.order-popup-icon {
+  font-size: 40px;
+  margin-bottom: 8px;
+}
+
+.order-popup-box h3 {
+  margin: 4px 0 8px;
+  font-size: 20px;
+  color: #0f5132;
+}
+
+.order-popup-box p {
+  font-size: 14px;
+  margin-bottom: 14px;
+}
+
+/* Buttons inside popup 
+.order-popup-box button {
+  padding: 8px 18px;
+  border-radius: 6px;
+  border: none;
+  background: #198754;
+  color: #fff;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.order-popup-box button:hover {
+  opacity: 0.9;
+}
+
+/* Dark theme ke liye popup bhi dark 
+body.dark-theme .order-popup-box {
+  background: #111827;
+  color: #f9fafb;
+}
+
+body.dark-theme .order-popup-box h3 {
+  color: #a7f3d0;
+}
+
+
+
+/* ===== SPECIAL INSTRUCTIONS BOX ===== */
+.extras-box {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: rgba(255,255,255,0.95);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+
+body.dark-theme .extras-box {
+  background: rgba(17,24,39,0.95);      /* dark grey */
+  color: #f9fafb;
+}
+
+.extras-title {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.extras-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 4px;
+  flex-wrap: wrap;
+}
+
+.extras-row label {
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.special-notes {
+  width: 100%;
+  margin-top: 6px;
+  padding: 6px 8px;
+  border-radius: 6px;
+  border: 1px solid #ddd;
+  font-size: 12px;
+  resize: vertical;
+  min-height: 40px;
+}
+
+body.dark-theme .special-notes {
+  background: #111827;
+  border-color: #374151;
+  color: #f9fafb;
+}
+
+
+
+
+/* ========= POPUPS (Confirm + Order Placed) ========= */
+
+.popup-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+}
+
+.popup-overlay.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.popup-box {
+  background: #ffffff;
+  border-radius: 14px;
+  width: 90%;
+  max-width: 340px;
+  padding: 20px 18px 18px;
+  text-align: center;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.35);
+}
+
+.popup-box h3 {
+  margin: 0 0 8px;
+  font-size: 20px;
+}
+
+.popup-box p {
+  margin: 0 0 16px;
+  font-size: 14px;
+  color: #444;
+}
+
+.popup-box button {
+  padding: 8px 18px;
+  border-radius: 6px;
+  border: none;
+  background: #198754;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.popup-box button:hover {
+  opacity: 0.9;
+}
+
+.popup-box .order-popup-icon {
+  font-size: 32px;
+  margin-bottom: 8px;
+}
+
+/* DARK THEME SUPPORT */
+body.dark-theme .popup-box {
+  background: #111827;
+  color: #f9fafb;
+}
+
+body.dark-theme .popup-box p {
+  color: #e5e7eb;
+}
+
+
+
+
+.notes-box{
+  background:#121c2f;
+  padding:14px;
+  border-radius:12px;
+  margin-top:12px;
+}
+
+.notes-title{
+  color:#fff;
+  font-size:16px;
+  margin-bottom:8px;
+  font-weight:600;
+}
+
+#specialNotes{
+  width:100%;
+  min-height:50px;
+  border-radius:10px;
+  border:none;
+  outline:none;
+  padding:10px;
+  font-size:14px;
+  background:#1f2b44;
+  color:white;
+}
+
+#specialNotes::placeholder{
+  color:#9aa4b2;
 }
