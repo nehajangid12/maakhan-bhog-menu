@@ -123,7 +123,6 @@ function renderMenu() {
 
 
 // ------------- PLACE ORDER (WhatsApp + POPUP) -------------
-
 function placeOrder() {
   if (cart.length === 0) {
     alert("Please add at least one item.");
@@ -154,18 +153,19 @@ function placeOrder() {
     "&text=" +
     encodeURIComponent(msg);
 
-  // Optional: debug ke liye alert
-  // alert("Redirecting to WhatsApp with this order:\n\n" + msg);
-
+  // WhatsApp open karo
   var link = document.createElement("a");
   link.href = url;
   link.target = "_blank";
   document.body.appendChild(link);
   link.click();
   document.body.removeChild(link);
+  localStorage.setItem("orderDone", "yes");
 
-  // ✅ success popup (agar HTML me hai)
-  pendingPopup = true;
+  // ✅ 3 second baad popup dikhana (user tab tak WhatsApp pe hoga / send karega)
+  setTimeout(function () {
+    showOrderPopup();
+  }, 3000);
 }
 
 
@@ -187,6 +187,8 @@ renderCart();
 
 // ------------- TABLE SAVE / LOAD -------------
 
+// ------------- TABLE SAVE / LOAD -------------
+
 function saveTable() {
   const table = document.getElementById("tableInput").value;
 
@@ -199,45 +201,27 @@ function saveTable() {
   document.getElementById("table-text").innerText = "Table No: " + table;
 }
 
-// page reload pe table no load karna
+// ✅ page reload pe table number wapas set karo
 window.addEventListener("load", () => {
   const savedTable = localStorage.getItem("tableNo");
   if (savedTable) {
     document.getElementById("table-text").innerText = "Table No: " + savedTable;
   }
-  // jab user wapas is tab par aata hai, tab popup dikhao
-window.addEventListener("focus", function () {
+});
+
+// ✅ order ke baad user sach-me page chhod kar gaya ya nahi, ye track karne ke liye
+var leftAfterOrder = false;
+
+// jab window blur ho (user dusri tab / app pe jaye: WhatsApp, etc.)
+window.addEventListener("blur", function () {
   if (pendingPopup) {
-    showOrderPopup();
-    pendingPopup = false;
+    leftAfterOrder = true;
   }
 });
-});
 
 
-// ------------- ORDER SUCCESS POPUP -------------
 
-function showOrderPopup() {
-  // 🔹 1) Cart empty karo
-  cart = [];
-  renderCart();    // "Your Order" se items hatt jayenge, total 0 ho jayega
 
-  // 🔹 2) Popup dikhाओ
-  var popup = document.getElementById("orderSuccess");
-  if (!popup) return;
-  popup.classList.add("show");
-
-  // 🔹 3) 2 second baad popup band
-  setTimeout(function () {
-    closeOrderPopup();
-  }, 6000);
-}
-
-function closeOrderPopup() {
-  var popup = document.getElementById("orderSuccess");
-  if (!popup) return;
-  popup.classList.remove("show");
-}
 
 // ---------- DARK / LIGHT THEME ----------
 
@@ -278,4 +262,60 @@ window.addEventListener("load", initTheme);
 
 
 
+function applyTheme(theme) {
+  if (theme === "dark") {
+    document.body.classList.add("dark-theme");
+  } else {
+    document.body.classList.remove("dark-theme");
+  }
 
+  const btn = document.getElementById("themeToggle");
+  if (btn) {
+    btn.textContent = theme === "dark" ? "☀" : "🌙";
+  }
+
+  localStorage.setItem("theme", theme);
+}
+
+function initThemeToggle() {
+  const btn = document.getElementById("themeToggle");
+  if (!btn) return;
+
+  const saved = localStorage.getItem("theme") || "light";
+  applyTheme(saved);
+
+  btn.addEventListener("click", () => {
+    const isDark = document.body.classList.contains("dark-theme");
+    applyTheme(isDark ? "light" : "dark");
+  });
+}
+
+window.addEventListener("load", initThemeToggle);
+
+// ===== ORDER POPUP FUNCTIONS =====
+
+// show popup
+function showOrderPopup() {
+  // clear cart
+  cart = [];
+  renderCart();
+
+  const popup = document.getElementById("orderSuccess");
+  if (popup) popup.classList.add("show");
+}
+
+// close popup
+function closeOrderPopup() {
+  const popup = document.getElementById("orderSuccess");
+  if (popup) popup.classList.remove("show");
+}
+
+// WhatsApp ke baad popup show karo
+window.addEventListener("focus", function () {
+  let done = localStorage.getItem("orderDone");
+
+  if (done === "yes") {
+    showOrderPopup();
+    localStorage.removeItem("orderDone");
+  }
+});
