@@ -44,7 +44,7 @@ var menu = [
 
 var cart = [];
 
-// item cart me add karo
+/*item cart me add karo
 function addToCart(id) {
   var item = null;
   for (var i = 0; i < menu.length; i++) {
@@ -57,6 +57,70 @@ function addToCart(id) {
 
   cart.push(item);
   renderCart();
+}*/
+function saveCart() {
+  localStorage.setItem("mb_cart", JSON.stringify(cart));
+}
+
+function loadCart() {
+  var saved = localStorage.getItem("mb_cart");
+  if (saved) {
+    cart = JSON.parse(saved);
+  }
+}
+
+
+window.addEventListener("load", function () {
+  loadCart();
+  renderCart();
+});
+
+function addToCart(id) {
+  var item = null;
+  for (var i = 0; i < menu.length; i++) {
+    if (menu[i].id === id) {
+      item = menu[i];
+      break;
+    }
+  }
+  if (!item) return;
+
+  // check item already in cart?
+  for (var j = 0; j < cart.length; j++) {
+    if (cart[j].id === id) {
+      cart[j].qty += 1;
+      renderCart();
+      return;
+    }
+  }
+
+  // first time add
+  cart.push({
+    id: item.id,
+    name: item.name,
+    price: item.price,
+    qty: 1
+  });
+
+  renderCart();
+  saveCart();
+}
+
+
+function increaseQty(index) {
+  cart[index].qty += 1;
+  renderCart();
+  saveCart();
+}
+
+function decreaseQty(index) {
+  if (cart[index].qty > 1) {
+    cart[index].qty -= 1;
+  } else {
+    cart.splice(index, 1); // remove item
+  }
+  renderCart();
+  saveCart();
 }
 
 // cart se item hatao (index ke basis pe)
@@ -65,7 +129,7 @@ function removeItem(index) {
   renderCart();
 }
 
-// cart ko screen par dikhana
+/* cart ko screen par dikhana
 function renderCart() {
   var cartDiv = document.getElementById("cart");
   var totalP = document.getElementById("total");
@@ -88,6 +152,39 @@ function renderCart() {
         "<button onclick='removeItem(" + i + ")' class='remove-btn'>Remove</button>" +
       "</div>";
     total += c.price;
+  }
+
+  cartDiv.innerHTML = html;
+  totalP.innerHTML = "Total: ₹" + total;
+}*/
+
+function renderCart() {
+  var cartDiv = document.getElementById("cart");
+  var totalP = document.getElementById("total");
+
+  if (cart.length === 0) {
+    cartDiv.innerHTML = "<p>No items added yet.</p>";
+    totalP.innerHTML = "Total: ₹0";
+    return;
+  }
+
+  var html = "";
+  var total = 0;
+
+  for (var i = 0; i < cart.length; i++) {
+    var c = cart[i];
+    total += c.price * c.qty;
+
+    html += `
+      <div class="cart-item">
+        <span>${c.name} - ₹${c.price}</span>
+        <div>
+          <button onclick="decreaseQty(${i})">−</button>
+          <span style="margin:0 6px">${c.qty}</span>
+          <button onclick="increaseQty(${i})">+</button>
+        </div>
+      </div>
+    `;
   }
 
   cartDiv.innerHTML = html;
@@ -255,8 +352,8 @@ function placeOrder() {
 
   for (var i = 0; i < cart.length; i++) {
     var c = cart[i];
-    msg += c.name + " - ₹" + c.price + "\n";
-    total += c.price;
+    msg += c.name + " x " + c.qty + " = ₹" + (c.price * c.qty) + "\n";
+total += c.price * c.qty;
   }
 
   msg += "\nTotal: ₹" + total;
